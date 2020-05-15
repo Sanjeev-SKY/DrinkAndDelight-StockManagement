@@ -1,0 +1,190 @@
+package com.cg.dndsm.service;
+
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cg.dndsm.entity.ProductEntity;
+import com.cg.dndsm.entity.ProductOrderEntity;
+import com.cg.dndsm.exception.ProductException;
+import com.cg.dndsm.exception.RawMaterialException;
+import com.cg.dndsm.model.ProductModel;
+import com.cg.dndsm.model.ProductOrderModel;
+import com.cg.dndsm.model.RawMaterialModel;
+import com.cg.dndsm.model.RawMaterialOrderModel;
+import com.cg.dndsm.repo.ProductOrderRepo;
+import com.cg.dndsm.repo.ProductRepo;
+
+
+@Service
+public class UpdateProductServiceImpl implements ProductOrderService, UpdateProductService {
+	
+	@Autowired
+	private ProductRepo prepo;
+	
+	@Autowired
+	private ProductOrderRepo porepo;
+	
+	
+	private ProductOrderModel ofOrder(ProductOrderEntity source) {
+		ProductOrderModel result=null;
+		if(source!=null) {
+			result=new ProductOrderModel();
+			result.setOrderId(source.getOrderId());
+			result.setName(source.getName());
+			result.setSupplierId(source.getSupplierId());
+			result.setQuantityValue(source.getQuantityValue());
+			result.setQuantityUnit(source.getQuantityUnit());
+			result.setDateOfOrder(source.getDateOfOrder());
+			result.setDateOfDelivery(source.getDateOfDelivery());
+			result.setPricePerUnit(source.getPricePerUnit());
+			result.setTotalPrice(source.getTotalPrice());
+			result.setDeliveryStatus(source.getDeliveryStatus());
+			result.setWarehouseId(source.getWarehouseId());
+		}
+		return result;
+	}
+	
+	
+	private ProductOrderEntity ofOrder(ProductOrderModel source) {
+		ProductOrderEntity result=null;
+		if(source!=null) {
+			result=new ProductOrderEntity();
+			result.setOrderId(source.getOrderId());
+			result.setName(source.getName());
+			result.setSupplierId(source.getSupplierId());
+			result.setQuantityValue(source.getQuantityValue());
+			result.setQuantityUnit(source.getQuantityUnit());
+			result.setDateOfOrder(source.getDateOfOrder());
+			result.setDateOfDelivery(source.getDateOfDelivery());
+			result.setPricePerUnit(source.getPricePerUnit());
+			result.setTotalPrice(source.getTotalPrice());
+			result.setDeliveryStatus(source.getDeliveryStatus());
+			result.setWarehouseId(source.getWarehouseId());
+		}
+		return result;
+	}
+	
+	
+	
+	private ProductModel of(ProductEntity source) {
+		ProductModel result=null;
+		if(source!=null) {
+			result=new ProductModel();
+			result.setOrderId(source.getOrderId());
+			result.setExitDate(source.getExitDate());
+			result.setManufacturingDate(source.getManufacturingDate());
+			result.setQualityCheck(source.getQualityCheck());
+			result.setExpiryDate(source.getExpiryDate());
+		}
+		return result;
+	}
+	private ProductEntity of(ProductModel source) {
+		ProductEntity result=null;
+		if(source!=null) {
+			result=new ProductEntity();
+			result.setOrderId(source.getOrderId());
+			result.setExitDate(source.getExitDate());
+			result.setManufacturingDate(source.getManufacturingDate());
+			result.setQualityCheck(source.getQualityCheck());
+			result.setExpiryDate(source.getExpiryDate());
+		}
+		return result;
+	}
+	
+	
+
+	@Override
+	public String addExitDate(ProductModel model) throws ProductException {
+		
+		if(model!=null) {
+			if(this.exitDateCheck(model)) {
+				throw new ProductException("There exists a product with the given ID");
+			}
+			else{
+				if(model.getExitDate().compareTo(LocalDate.now())<0) {
+					model=of(prepo.save(of(model)));	
+				}
+				else
+					return "Invalid Exit Date";
+				
+			}
+		}
+		//return model;
+		return "Exit Date Updated";
+	}
+
+	
+	
+	@Override
+	public String updateProductDetails(ProductModel model) throws ProductException {
+
+		//if(model!=null) {
+			ProductModel oldDetails=of(prepo.findById(model.getOrderId()).orElse(null));
+			if(oldDetails==null) {
+				throw new ProductException("There does not exists a product with the given ID");
+			}
+			else {
+				//model=of(
+					//if(model.getManufacturingDate().compareTo(oldDetails.getProcessDate()) >= 0 && model.getExpiryDate().compareTo(model.getManufacturingDate()) >= 0) {
+					if(this.validateManufacturingDate(model.getManufacturingDate(),oldDetails.getExitDate()) && this.validateExpiryDate(model.getManufacturingDate(), model.getExpiryDate())) {
+						prepo.updatePDetails(model.getOrderId(),model.getManufacturingDate(),model.getExpiryDate(),model.getQualityCheck());
+						return "Details Updated";
+					}
+					else {
+						return "Invalid Dates Entered";
+					}
+					//}
+						//);
+			}
+		//}
+		//return model;
+		//return "Details are null";
+		
+	}
+	
+	
+	
+	
+	@Override
+	public ProductOrderModel findById(String orderId) {
+		return ofOrder(porepo.findById(orderId).orElse(null));
+	}
+	
+	
+	
+	
+	
+	
+	@Override
+	public boolean exitDateCheck(ProductModel model) {
+		if(prepo.existsById(model.getOrderId())) {
+			return true;
+		}
+		return false;
+	}
+
+
+	public boolean validateManufacturingDate(LocalDate manufacturingDate, LocalDate exitDate) {
+		//ProductStock psm=Database.getmMap().get(Main.idm);
+		
+		if(manufacturingDate.compareTo(exitDate)<0 && manufacturingDate.compareTo(LocalDate.now())<0) {
+			//System.out.println("if work");
+			return true;
+		}
+		//System.out.println(manufacturingDate.compareTo(processDate));
+		//System.out.println(manufacturingDate.compareTo(LocalDate.now()));
+		return false;
+	}
+	
+	public boolean validateExpiryDate(LocalDate manufacturingDate, LocalDate expiryDate) {
+		if(expiryDate.compareTo(manufacturingDate)>0 && expiryDate.compareTo(LocalDate.now())>0) {
+			//System.out.println(expiryDate.compareTo(manufacturingDate));
+			return true;
+		}
+		//System.out.println(expiryDate.compareTo(manufacturingDate));
+		return false;
+	}
+
+}

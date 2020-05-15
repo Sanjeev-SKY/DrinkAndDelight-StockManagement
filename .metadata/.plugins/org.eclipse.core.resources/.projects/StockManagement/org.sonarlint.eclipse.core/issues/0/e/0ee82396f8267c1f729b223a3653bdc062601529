@@ -1,0 +1,19 @@
+
+z
+java:S1126®"AReplace this if-then-else statement by a single return statement.(öæò¹şÿÿÿÿ8¸åíÍ .H²RMINORZ
+CODE_SMELL
+n
+java:S1126¥"AReplace this if-then-else statement by a single return statement.(íı¥˜H±RMINORZ
+CODE_SMELL
+\
+java:S1125z")Remove the literal "false" boolean value.(µşÃ¤8¸åíÍ .H­RMINORZ
+CODE_SMELL
+z
+java:S1126µ"AReplace this if-then-else statement by a single return statement.(¤²Şùÿÿÿÿ8¸åíÍ .H®RMINORZ
+CODE_SMELL
+d
+java:S1144.",Remove this unused private "ofOrder" method.(‘˜ëµøÿÿÿÿ8¹øğÓŸ.H¶RMAJORZ
+CODE_SMELL
+¿
+java:S2681p"†This line will not be executed conditionally; only the first line of this 2-line block will be. The rest will execute unconditionally.(––Ïıÿÿÿÿ8—Úø˜¡.H°RMAJORZ
+CODE_SMELL

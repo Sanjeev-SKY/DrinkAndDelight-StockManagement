@@ -1,0 +1,82 @@
+package com.cg.dndsm.entity;
+
+import java.time.LocalDate;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class ProductEntity {
+	
+	
+	@Id
+	private String orderId;
+	
+	
+	
+//	public String name;
+//	public String supplierId;
+//	public long quantityValue;
+//	public String quantityUnit;
+//	public LocalDate dateOfOrder;
+//	public LocalDate dateOfDelivery;
+//	public long pricePerUnit;
+//	public long totalPrice;
+//	public String deliveryStatus;
+//	public String warehouseId;
+	
+	
+	
+	
+	private LocalDate manufacturingDate;
+	
+	private LocalDate expiryDate;
+	
+	private String qualityCheck;
+	
+	private LocalDate processDate;
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public LocalDate getManufacturingDate() {
+		return manufacturingDate;
+	}
+
+	public void setManufacturingDate(LocalDate manufacturingDate) {
+		this.manufacturingDate = manufacturingDate;
+	}
+
+	public LocalDate getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(LocalDate expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+
+	public String getQualityCheck() {
+		return qualityCheck;
+	}
+
+	public void setQualityCheck(String qualityCheck) {
+		this.qualityCheck = qualityCheck;
+	}
+
+	public LocalDate getProcessDate() {
+		return processDate;
+	}
+
+	public void setProcessDate(LocalDate processDate) {
+		this.processDate = processDate;
+	}
+	
+	
+	
+	
+}

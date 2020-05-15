@@ -1,0 +1,58 @@
+package com.cg.dndsm.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cg.dndsm.entity.RawMaterialEntity;
+import com.cg.dndsm.entity.RawMaterialOrderEntity;
+import com.cg.dndsm.model.RawMaterialModel;
+import com.cg.dndsm.repo.RawMaterialOrderRepo;
+import com.cg.dndsm.repo.RawMaterialRepo;
+
+
+@Service
+public class TrackProductServiceImpl implements TrackRawMaterialService {
+	
+	@Autowired
+	private RawMaterialRepo repo;
+	
+	@Autowired
+	private RawMaterialOrderRepo rmorepo;
+	
+	
+//	@Autowired
+//	RawMaterialOrderProxyService  rmoProxyService;
+	
+	
+	@Override
+	public RawMaterialModel findById(String orderId) {
+
+		RawMaterialModel result=null;
+	            
+	           // RawMaterialOrderModel typeSource = rmoProxyService.getRawMaterialOrder(orderId);
+	           	RawMaterialOrderEntity typeSource = rmorepo.findById(orderId).orElse(null);
+	           	if(typeSource!=null) {
+	        	    result=new RawMaterialModel();
+	                result.setName(typeSource.getName());
+	                result.setSupplierId(typeSource.getSupplierId());
+	                result.setQuantityValue(typeSource.getQuantityValue());
+	                result.setQuantityUnit(typeSource.getQuantityUnit());
+	                result.setDateOfOrder(typeSource.getDateOfOrder());
+	                result.setDateOfDelivery(typeSource.getDateOfDelivery());
+	                result.setPricePerUnit(typeSource.getPricePerUnit());
+	                result.setTotalPrice(typeSource.getTotalPrice());
+	                result.setDeliveryStatus(typeSource.getDeliveryStatus());
+	                result.setWarehouseId(typeSource.getWarehouseId());
+	                RawMaterialEntity entity = repo.findById(orderId).orElse(null);
+	                if(entity!= null) {
+		            result.setOrderId(entity.getOrderId());
+		            result.setManufacturingDate(entity.getManufacturingDate());
+		            result.setExpiryDate(entity.getExpiryDate());
+		            result.setQualityCheck(entity.getQualityCheck());
+		            result.setProcessDate(entity.getProcessDate());
+	                }
+	            }
+		return result;
+	}
+
+}

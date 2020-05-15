@@ -1,0 +1,5 @@
+package com.cg.dndsm.repo;
+
+public interface ProductOrderRepo extends JpaRepository<ProductOrderEntity, long>{
+
+}

@@ -1,0 +1,26 @@
+package com.cg.dndsm.service;
+
+import java.time.LocalDate;
+
+import com.cg.dndsm.exception.ProductException;
+import com.cg.dndsm.model.ProductModel;
+
+public interface UpdateProductService {
+
+	
+	
+
+	
+	//public RawMaterialModel addProcessDate(RawMaterialModel model) throws RawMaterialException;
+	
+	public String addExitDate(ProductModel model) throws ProductException;
+	
+	//public RawMaterialModel updateRawMaterialDetails(RawMaterialModel model) throws RawMaterialException;
+	
+	public String updateProductDetails(ProductModel model) throws ProductException;
+	
+	public boolean exitDateCheck(ProductModel model,ProductModel oldDetails);
+	
+	
+	
+}
